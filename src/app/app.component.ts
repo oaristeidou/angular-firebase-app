@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs";
-import {AngularFireDatabase, AngularFireObject} from "angularfire2/database";
+import {AngularFireDatabase, AngularFireList, AngularFireObject} from "angularfire2/database";
 
 
 @Component({
@@ -11,20 +11,38 @@ import {AngularFireDatabase, AngularFireObject} from "angularfire2/database";
 export class AppComponent {
   title = 'app';
 
-
-
-  courses: Observable<any[]>;
+  courses$: AngularFireList<any[]>;
+  lesson$: AngularFireObject<any>;
 
   constructor(db: AngularFireDatabase) {
 
-    this.courses = db.list('courses').valueChanges();
+    this.courses$ = db.list('courses');
 
-    this.courses.subscribe(
-      values => console.log(values)
-    );
+    this.courses$.valueChanges().subscribe(console.log);
 
-    const course : AngularFireObject<any> = db.object('courses/-L0X0DugysTbstWKG0fe');
+    this.lesson$ = db.object('lessons/-L0X0Duk2oY_2GefTket');
 
-    course.valueChanges().subscribe(console.log);
+    this.lesson$.valueChanges().subscribe(console.log);
   }
+
+  listPush(){
+    this.courses$.push({description: 'Test new course'} as any);
+  }
+
+  listRemove(){
+
+  }
+
+  listUpdate(){
+
+  }
+
+  objUpdate(){
+
+  }
+
+  objSet(){
+
+  }
+
 }
