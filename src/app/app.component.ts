@@ -55,11 +55,11 @@ export class AppComponent {
   }
 
   objUpdate(){
-
+    this.lesson$.update({description: 'Angular new description!!'});
   }
 
   objSet(){
-
+    this.lesson$.set({description: 'Angular new description!!'});
   }
 
 }
