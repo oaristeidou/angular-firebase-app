@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs";
 import {AngularFireDatabase, AngularFireList, AngularFireObject} from "angularfire2/database";
+import {tokenKey} from "@angular/core/src/view";
+import {tokenReference} from "@angular/compiler";
 
 
 @Component({
@@ -11,7 +13,7 @@ import {AngularFireDatabase, AngularFireList, AngularFireObject} from "angularfi
 export class AppComponent {
   title = 'app';
 
-  courses$: AngularFireList<any[]>;
+  courses$: AngularFireList<any>;
   lesson$: AngularFireObject<any>;
   firstCourse: any;
 
@@ -25,9 +27,10 @@ export class AppComponent {
 
     this.lesson$.valueChanges().subscribe(console.log);
 
-    this.courses$.valueChanges().map(courses => courses[0])
+    this.courses$.valueChanges()
+      .pipe()
       .subscribe(
-        course => this.firstCourse=course.keys().next()
+        course => this.firstCourse=course.pop()
       )
   }
 
@@ -48,7 +51,7 @@ export class AppComponent {
   }
 
   listUpdate(){
-
+    this.courses$.update(this.firstCourse, {description: 'Angular Update'} as any)
   }
 
   objUpdate(){
