@@ -5,10 +5,12 @@ import { AppComponent } from './app.component';
 import {AngularFireModule} from "angularfire2";
 import {firebaseConfig} from "../environments/firebase.config";
 import {AngularFireDatabaseModule} from "angularfire2/database";
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
