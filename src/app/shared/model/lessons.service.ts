@@ -9,6 +9,8 @@ export class LessonsService {
   constructor(private angularFireDb : AngularFireDatabase) { }
 
   findAllLessons(): Observable<Lesson[]>{
-    return this.angularFireDb.list('lessons').valueChanges();
+    return this.angularFireDb.list('lessons').valueChanges()
+      .do(console.log)
+      .map(Lesson.fromJsonToList);
   }
 }
