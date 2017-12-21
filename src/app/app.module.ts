@@ -9,11 +9,13 @@ import { HomeComponent } from './home/home.component';
 import {LessonsService} from "./shared/model/lessons.service";
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
+import { ListLessonsComponent } from './list-lessons/list-lessons.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    ListLessonsComponent
   ],
   imports: [
     BrowserModule,
