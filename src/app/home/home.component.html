@@ -1,9 +1,9 @@
 <h2>All Lessons</h2>
 
-<h4>Total Lessons: {{lessons?.length}}</h4>
+<h4>Total Lessons: {{filteredLessons?.length}}</h4>
 
-<input class="search-bar" placeholder="Search">
+<input class="search-bar" placeholder="Search" (keyup)="filterList(input.value)" #input>
 
 <div class="lessons-list-container v-h-center-block-parent">
-  <list-lessons [lessons]="lessons"></list-lessons>
+  <list-lessons [lessons]="filteredLessons"></list-lessons>
 </div>

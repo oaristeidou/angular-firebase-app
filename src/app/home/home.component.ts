@@ -8,7 +8,8 @@ import {Lesson} from "../shared/model/lesson";
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  lessons: Lesson[];
+  allLessons: Lesson[];
+  filteredLessons: Lesson[];
 
 
   constructor(private lessonsService: LessonsService) {
@@ -19,9 +20,15 @@ export class HomeComponent implements OnInit {
     this.lessonsService.findAllLessons()
       .do(console.log)
       .subscribe(
-        lessons => this.lessons=lessons
+        lessons => {
+          this.allLessons = this.filteredLessons = lessons;
+        }
       );
 
+  }
+
+  filterList (filterInput: string){
+    this.filteredLessons = this.allLessons.filter(lesson => lesson.description.includes(filterInput));
   }
 
 }
