@@ -10,6 +10,8 @@ import {LessonsService} from "./shared/model/lessons.service";
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import { ListLessonsComponent } from './list-lessons/list-lessons.component';
+import {RouterModule} from "@angular/router";
+import {routerConfig} from "./router.config";
 
 @NgModule({
   declarations: [
@@ -20,7 +22,8 @@ import { ListLessonsComponent } from './list-lessons/list-lessons.component';
   imports: [
     BrowserModule,
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    RouterModule.forRoot(routerConfig)
   ],
   providers: [LessonsService],
   bootstrap: [AppComponent]
