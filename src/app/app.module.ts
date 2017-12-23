@@ -12,12 +12,16 @@ import 'rxjs/add/operator/do';
 import { ListLessonsComponent } from './list-lessons/list-lessons.component';
 import {RouterModule} from "@angular/router";
 import {routerConfig} from "./router.config";
+import { TopMenuComponent } from './top-menu/top-menu.component';
+import { CoursesComponent } from './courses/courses.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    ListLessonsComponent
+    ListLessonsComponent,
+    TopMenuComponent,
+    CoursesComponent
   ],
   imports: [
     BrowserModule,

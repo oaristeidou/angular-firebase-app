@@ -1,5 +1,6 @@
 import {Route} from "@angular/router";
 import {HomeComponent} from "./home/home.component";
+import {CoursesComponent} from "./courses/courses.component";
 /**
  * Created by odyssefs on 22.12.17.
  */
@@ -7,6 +8,9 @@ export const routerConfig: Route[] = [
   {
     path:'home',
     component: HomeComponent
+  },{
+    path:'courses',
+    component: CoursesComponent
   },
   {
     path:'',
