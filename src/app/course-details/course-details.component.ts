@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {CoursesService} from "../shared/model/courses.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-course-details',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CourseDetailsComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private route: ActivatedRoute,
+    private coursesService: CoursesService) { }
 
   ngOnInit() {
+    const courseUrl=this.route.snapshot.params['id'];
+    this.coursesService.findLessonsForCourse(courseUrl);
   }
 
 }

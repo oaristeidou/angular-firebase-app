@@ -12,4 +12,9 @@ export class CoursesService {
     return this.angularFirebase.list('courses').valueChanges()
       .map(Course.fromJsonArray);
   }
+
+  findLessonsForCourse(courseUrl: String){
+    console.log(courseUrl);
+
+  }
 }
