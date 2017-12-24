@@ -15,6 +15,7 @@ import {routerConfig} from "./router.config";
 import { TopMenuComponent } from './top-menu/top-menu.component';
 import { CoursesComponent } from './courses/courses.component';
 import {CoursesService} from "./shared/model/courses.service";
+import { CourseDetailsComponent } from './course-details/course-details.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import {CoursesService} from "./shared/model/courses.service";
     HomeComponent,
     ListLessonsComponent,
     TopMenuComponent,
-    CoursesComponent
+    CoursesComponent,
+    CourseDetailsComponent
   ],
   imports: [
     BrowserModule,
