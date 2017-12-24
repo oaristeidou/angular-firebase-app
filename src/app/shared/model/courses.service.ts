@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Observable} from "rxjs";
-import {AngularFireDatabase} from "angularfire2/database";
+import {AngularFireDatabase, snapshotChanges} from "angularfire2/database";
 import {Course} from "./course";
 import {Lesson} from "./lesson";
 
@@ -16,12 +16,18 @@ export class CoursesService {
 
   findLessonsForCourse(courseUrl: string): Observable<Lesson[]>{
     console.log(courseUrl);
-    this.angularFirebase
-      .list('courses',
-        ref => ref.orderByChild('url').equalTo(courseUrl)
-      )
-      .valueChanges()
-      .do(console.log);
+    const course$ = this.angularFirebase.list('courses', ref => ref.orderByChild('url').equalTo(courseUrl)).valueChanges();
+
+    const lessonsPerCourse$ = course$
+      .switchMap(snapshot => this.angularFirebase
+        .list(`lessonsPerCourse/`)
+        .valueChanges())
+        .do(console.log);
+
+
+    course$.subscribe();
+    lessonsPerCourse$.subscribe();
+
     return Observable.of([]);
 
   }
