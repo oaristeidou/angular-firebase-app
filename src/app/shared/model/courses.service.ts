@@ -15,20 +15,19 @@ export class CoursesService {
   }
 
   findLessonsForCourse(courseUrl: string): Observable<Lesson[]>{
-    console.log(courseUrl);
     const course$ = this.angularFirebase.list('courses', ref => ref.orderByChild('url').equalTo(courseUrl)).valueChanges();
 
     const lessonsPerCourse$ = course$
-      .switchMap(snapshot => this.angularFirebase
-        .list(`lessonsPerCourse/`)
-        .valueChanges())
-        .do(console.log);
+      .switchMap(course => this.angularFirebase.list('lessonsPerCourse/${course.$key}').valueChanges())
+      .do(console.log);
 
+    const courseLesson$ = lessonsPerCourse$
+      .map(lspc =>
+        lspc.map(lsc =>
+          this.angularFirebase.object('lessons/${lsc.$key}').valueChanges())
+      .do(console.log));
 
-    course$.subscribe();
     lessonsPerCourse$.subscribe();
-
-    return Observable.of([]);
-
+    return lessonsPerCourse$;
   }
 }
