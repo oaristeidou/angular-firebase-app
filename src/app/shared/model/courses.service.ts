@@ -21,13 +21,10 @@ export class CoursesService {
       .switchMap(course => this.angularFirebase.list('lessonsPerCourse/${course.$key}').valueChanges())
       .do(console.log);
 
-    const courseLesson$ = lessonsPerCourse$
+    return lessonsPerCourse$
       .map(lspc =>
         lspc.map(lsc =>
-          this.angularFirebase.object('lessons/${lsc.$key}').valueChanges())
-      .do(console.log));
-
-    lessonsPerCourse$.subscribe();
-    return lessonsPerCourse$;
+          this.angularFirebase.object('lessons/${lsc.$key}').valueChanges()))
+      .flatMap(fbojs => Observable.combineLatest(fbojs));
   }
 }
