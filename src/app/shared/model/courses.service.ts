@@ -14,17 +14,24 @@ export class CoursesService {
       .map(Course.fromJsonArray);
   }
 
-  findLessonsForCourse(courseUrl: string): Observable<Lesson[]>{
-    const course$ = this.angularFirebase.list('courses', ref => ref.orderByChild('url').equalTo(courseUrl)).valueChanges();
+  findCourseByUrl(courseUrl:string):Observable<Course[]>{
+    return this.angularFirebase.list('courses', ref => ref.orderByChild('url').equalTo(courseUrl)).valueChanges();
+  }
 
-    const lessonsPerCourse$ = course$
+  findLessonKeysPerCourseUrl(course$: Observable<Course[]>): Observable<Lesson[]>{
+    return course$
       .switchMap(course => this.angularFirebase.list('lessonsPerCourse/${course.$key}').valueChanges())
-      .do(console.log);
-
-    return lessonsPerCourse$
       .map(lspc =>
         lspc.map(lsc =>
           this.angularFirebase.object('lessons/${lsc.$key}').valueChanges()))
-      .flatMap(fbojs => Observable.combineLatest(fbojs));
+      .flatMap(fbojs => Observable.combineLatest(fbojs))
+      .do(console.log)
+  }
+
+  findLessonsForCourse(courseUrl: string): Observable<Lesson[]>{
+    const course$ = this.findCourseByUrl(courseUrl);
+
+    return this.findLessonKeysPerCourseUrl(course$);
+      ;
   }
 }
