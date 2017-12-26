@@ -10,7 +10,7 @@ import {Observable} from "rxjs/Rx";
 export class Course {
 
     constructor(
-        public $key:string,
+        public key:string,
         public url:string,
         public description:string,
         public iconUrl: string,
@@ -19,8 +19,8 @@ export class Course {
 
     }
 
-    static fromJson({$key, url, description, iconUrl, courseListIcon, longDescription}) {
-        return new Course($key, url, description, iconUrl, courseListIcon, longDescription);
+    static fromJson({key, url, description, iconUrl, courseListIcon, longDescription}) {
+        return new Course(key, url, description, iconUrl, courseListIcon, longDescription);
     }
 
     static fromJsonArray(json : any[]) : Course[] {

@@ -3,7 +3,7 @@
  */
 export class Lesson {
   constructor (
-    public $key:string,
+    public key:string,
     public description: string,
     public duration:string,
     public url: string,
@@ -25,7 +25,7 @@ export class Lesson {
   static fromJson(json): Lesson {
     return new Lesson(
 
-      json.$key,
+      json.key,
       json.description,
       json.duration,
       json.url,
