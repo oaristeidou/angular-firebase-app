@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CoursesService} from "../shared/model/courses.service";
 import {ActivatedRoute} from "@angular/router";
 import {Observable} from "rxjs";
@@ -15,13 +15,13 @@ export class CourseDetailsComponent implements OnInit {
   course$: Observable<Course>;
   lessons$: Observable<Lesson[]>;
 
-  constructor(
-    private route: ActivatedRoute,
-    private coursesService: CoursesService) { }
+  constructor(private route: ActivatedRoute,
+              private coursesService: CoursesService) {
+  }
 
   ngOnInit() {
-    const courseUrl=this.route.snapshot.params['id'];
-    this.course$=this.coursesService.findCourseByUrl(courseUrl)[0];
+    const courseUrl = this.route.snapshot.params['id'];
+    this.course$ = this.coursesService.findCourseByUrl(courseUrl)[0];
 
     this.lessons$ = this.coursesService.findAllLessonsForCourse(courseUrl);
   }
