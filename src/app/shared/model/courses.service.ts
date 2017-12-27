@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Observable} from "rxjs";
-import {AngularFireDatabase, snapshotChanges} from "angularfire2/database";
+import {AngularFireAction, AngularFireDatabase, AngularFireObject, snapshotChanges} from "angularfire2/database";
 import {Course} from "./course";
 import {Lesson} from "./lesson";
 
@@ -10,15 +10,16 @@ export class CoursesService {
   constructor(private angularFirebase: AngularFireDatabase) { }
 
   findAllCourses():Observable<Course[]> {
-    return this.angularFirebase.list('courses').valueChanges()
+    return this.angularFirebase.list('courses').snapshotChanges()
       .map(Course.fromJsonArray);
   }
 
 
-  findCourseByUrl(courseUrl:string): Observable<Course> {
+  findCourseByUrl(courseUrl:string): Observable<Course[]> {
     return this.angularFirebase.list('courses', ref =>
-      ref.orderByChild('url').equalTo(courseUrl)).valueChanges()
-      .map(results => results[0]);
+      ref.orderByChild('url').equalTo(courseUrl))
+      .snapshotChanges()
+      .map(Course.fromJsonArray);
   }
 
 
@@ -26,16 +27,15 @@ export class CoursesService {
     return this.findCourseByUrl(courseUrl)
       .do(val => console.log("course",val))
       .filter(course => !!course)
-      .switchMap(course => this.angularFirebase.list(`lessonsPerCourse/${course.key}`).valueChanges())
-      .map( lspc => lspc.map(lpc => lpc) );
+      .switchMap(course => this.angularFirebase.list(`lessonsPerCourse/${course[0].key}`).snapshotChanges())
+      .map( lspc => lspc.map(lpc => lpc.key) );
   }
 
 
   findLessonsForLessonKeys(lessonKeys$: Observable<string[]>) :Observable<Lesson[]> {
     return lessonKeys$
       .map(lspc => lspc.map(lessonKey => this.angularFirebase.object('lessons/' + lessonKey).valueChanges()) )
-      .flatMap(fbojs => Observable.combineLatest(fbojs) )
-
+      .mergeMap(fbojs => Observable.combineLatest(fbojs) )
   }
 
 
