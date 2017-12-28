@@ -24,12 +24,15 @@ export class CoursesService {
   }
 
 
-  findLessonKeysPerCourseUrl(courseUrl: string, pageSize: number = 10): Observable<string[]> {
+  findLessonKeysPerCourseUrl(courseUrl: string, pageSize: number = 10, lastLessonKey: string = ''): Observable<string[]> {
     return this.findCourseByUrl(courseUrl)
       .do(val => console.log("course", val))
       .filter(course => !!course)
       .switchMap(course => this.angularFirebase.list(`lessonsPerCourse/${course[0].key}`,
-        ref => ref.limitToFirst(pageSize)
+        ref => ref
+          .limitToFirst(pageSize + 1)
+          .startAt(lastLessonKey)
+          .orderByKey()
       ).snapshotChanges())
       .map(lspc => lspc.map(lpc => lpc.key));
   }
@@ -37,19 +40,27 @@ export class CoursesService {
 
   findLessonsForLessonKeys(lessonKeys$: Observable<string[]>): Observable<Lesson[]> {
     return lessonKeys$
-      .map(lspc => lspc.map(lessonKey => this.angularFirebase.object('lessons/' + lessonKey).valueChanges()))
-      .mergeMap(fbojs => Observable.combineLatest(fbojs))
+      .map(lspc => lspc.map(lessonKey =>
+        this.angularFirebase
+          .object('lessons/' + lessonKey)
+          .snapshotChanges()
+          .map(Lesson.fromJson)))
+      .mergeMap(fbojs => Observable.combineLatest(fbojs));
   }
 
   loadFirstLessonsPage(courseUrl: string, pageSize: number):Observable<Lesson[]>{
-
     const firstPagelessonKeys$ = this.findLessonKeysPerCourseUrl(courseUrl, pageSize);
-
     return this.findLessonsForLessonKeys(firstPagelessonKeys$);
   }
 
 
   findAllLessonsForCourse(courseUrl: string): Observable<Lesson[]> {
     return this.findLessonsForLessonKeys(this.findLessonKeysPerCourseUrl(courseUrl));
+  }
+
+  loadNextPage(courseUrl: string,
+               lastCourseKey: string,
+               pageSize: number): Observable<Lesson[]>{
+    return this.findLessonsForLessonKeys(this.findLessonKeysPerCourseUrl(courseUrl, pageSize, lastCourseKey));
   }
 }

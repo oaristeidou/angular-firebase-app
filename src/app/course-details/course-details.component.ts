@@ -13,19 +13,36 @@ import {Lesson} from "../shared/model/lesson";
 export class CourseDetailsComponent implements OnInit {
 
   course$: Observable<Course>;
-  lessons$: Observable<Lesson[]>;
+  lessonsArray: Lesson[];
+
+  courseUrl: string;
 
   constructor(private route: ActivatedRoute,
               private coursesService: CoursesService) {
   }
 
   ngOnInit() {
-    const courseUrl = this.route.snapshot.params['id'];
-    this.course$ = this.coursesService.findCourseByUrl(courseUrl)[0];
+    this.courseUrl = this.route.snapshot.params['id'];
+    this.course$ = this.coursesService.findCourseByUrl(this.courseUrl)[0];
 
-    this.lessons$ = this.coursesService.loadFirstLessonsPage(courseUrl, 3);
+    const lessons$ = this.coursesService.loadFirstLessonsPage(this.courseUrl, 3);
 
+    lessons$.subscribe(lessons => this.lessonsArray=lessons);
     // this.lessons$ = this.coursesService.findAllLessonsForCourse(courseUrl);
   }
+
+  previous(){
+
+  }
+
+  next(){
+    this.coursesService.loadNextPage(
+      this.courseUrl,
+      this.lessonsArray[this.lessonsArray.length-1].key,
+      3)
+      .subscribe(lessons => this.lessonsArray=lessons);
+
+  }
+
 
 }
