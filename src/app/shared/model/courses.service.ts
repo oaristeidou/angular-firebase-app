@@ -24,11 +24,13 @@ export class CoursesService {
   }
 
 
-  findLessonKeysPerCourseUrl(courseUrl: string): Observable<string[]> {
+  findLessonKeysPerCourseUrl(courseUrl: string, pageSize: number = 10): Observable<string[]> {
     return this.findCourseByUrl(courseUrl)
       .do(val => console.log("course", val))
       .filter(course => !!course)
-      .switchMap(course => this.angularFirebase.list(`lessonsPerCourse/${course[0].key}`).snapshotChanges())
+      .switchMap(course => this.angularFirebase.list(`lessonsPerCourse/${course[0].key}`,
+        ref => ref.limitToFirst(pageSize)
+      ).snapshotChanges())
       .map(lspc => lspc.map(lpc => lpc.key));
   }
 
@@ -37,6 +39,13 @@ export class CoursesService {
     return lessonKeys$
       .map(lspc => lspc.map(lessonKey => this.angularFirebase.object('lessons/' + lessonKey).valueChanges()))
       .mergeMap(fbojs => Observable.combineLatest(fbojs))
+  }
+
+  loadFirstLessonsPage(courseUrl: string, pageSize: number):Observable<Lesson[]>{
+
+    const firstPagelessonKeys$ = this.findLessonKeysPerCourseUrl(courseUrl, pageSize);
+
+    return this.findLessonsForLessonKeys(firstPagelessonKeys$);
   }
 
 
