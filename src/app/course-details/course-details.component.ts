@@ -28,11 +28,14 @@ export class CourseDetailsComponent implements OnInit {
     const lessons$ = this.coursesService.loadFirstLessonsPage(this.courseUrl, 3);
 
     lessons$.subscribe(lessons => this.lessonsArray=lessons);
-    // this.lessons$ = this.coursesService.findAllLessonsForCourse(courseUrl);
   }
 
   previous(){
-
+    this.coursesService.loadPreviousPage(
+      this.courseUrl,
+      this.lessonsArray[0].key,
+      3)
+      .subscribe(lessons => this.lessonsArray=lessons);
   }
 
   next(){
@@ -41,7 +44,6 @@ export class CourseDetailsComponent implements OnInit {
       this.lessonsArray[this.lessonsArray.length-1].key,
       3)
       .subscribe(lessons => this.lessonsArray=lessons);
-
   }
 
 
