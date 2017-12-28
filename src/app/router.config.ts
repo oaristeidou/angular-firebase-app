@@ -2,6 +2,7 @@ import {Route} from "@angular/router";
 import {HomeComponent} from "./home/home.component";
 import {CoursesComponent} from "./courses/courses.component";
 import {CourseDetailsComponent} from "./course-details/course-details.component";
+import {LessonDetailsComponent} from "./lesson-details/lesson-details.component";
 /**
  * Created by odyssefs on 22.12.17.
  */
@@ -22,6 +23,10 @@ export const routerConfig: Route[] = [
         component: CoursesComponent
       }
     ]
+  },
+  {
+    path:'lessons/:id',
+    component: LessonDetailsComponent
   },
   {
     path:'',

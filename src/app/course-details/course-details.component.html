@@ -8,7 +8,7 @@
     <button (click)="next()">Next Page</button>
   </div>
 
-  <list-lessons [lessons]="lessonsArray"></list-lessons>
+  <list-lessons [lessons]="lessonsArray" (lesson)="navigateToLesson($event)"></list-lessons>
 
   <div class="tools-bar">
     <button>
