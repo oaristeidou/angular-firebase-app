@@ -9,8 +9,10 @@ export class Lesson {
               public tags: string,
               public pro: boolean,
               public longDescription: string,
-              public courseId: string) {
+              public courseId: string,
+              public videoUrl: string) {
   }
+
 
 
   get isBegginer() {
@@ -31,6 +33,7 @@ export class Lesson {
       lessonValues.tags,
       lessonValues.pro,
       lessonValues.longDescription,
-      lessonValues.courseId);
+      lessonValues.courseId,
+      lessonValues.videoUrl);
   }
 }
