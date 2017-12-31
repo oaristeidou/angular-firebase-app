@@ -14,6 +14,7 @@ export class CourseDetailsComponent implements OnInit {
 
   course$: Observable<Course>;
   lessonsArray: Lesson[];
+  course: Course;
 
   courseUrl: string;
 
@@ -25,7 +26,8 @@ export class CourseDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.courseUrl = this.route.snapshot.params['id'];
-    this.course$ = this.coursesService.findCourseByUrl(this.courseUrl)[0];
+    this.course$ = this.coursesService.findCourseByUrlNew(this.courseUrl);
+    this.course$.subscribe(course => this.course=course);
 
     const lessons$ = this.coursesService.loadFirstLessonsPage(this.courseUrl, 3);
 

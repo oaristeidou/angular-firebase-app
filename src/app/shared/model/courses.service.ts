@@ -23,6 +23,14 @@ export class CoursesService {
       .map(Course.fromJsonArray);
   }
 
+  findCourseByUrlNew(courseUrl: string): Observable<Course> {
+    return this.angularFirebase.list('courses', ref =>
+      ref.orderByChild('url').equalTo(courseUrl))
+      .snapshotChanges()
+      .map(results => results[0])
+      .map(Course.fromJson);
+  }
+
 
   findLessonKeysPerCourseUrl(courseUrl: string, pageSize: number = 10, lastLessonKey: string = ''): Observable<string[]> {
     return this.findCourseByUrl(courseUrl)

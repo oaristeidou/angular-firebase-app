@@ -11,9 +11,9 @@
   <list-lessons [lessons]="lessonsArray" (lesson)="navigateToLesson($event)"></list-lessons>
 
   <div class="tools-bar">
-    <button>
+    <button routerLink="new" [queryParams]="{courseId: (course$ | async)?.key }">
       New Lesson
     </button>
   </div>
-
+  {{(course$ | async)?.key}}
 </div>
