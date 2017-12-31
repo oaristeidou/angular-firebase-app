@@ -22,7 +22,7 @@ export class LessonsService {
   }
 
   loadNextLesson(courseId: string, lessonId: string): Observable<Lesson> {
-    return this.angularFireDb.list(`lessonsPerCourse${courseId}`,
+    return this.angularFireDb.list(`lessonsPerCourse/${courseId}`,
       ref =>
         ref.orderByKey()
           .startAt(lessonId)
@@ -30,13 +30,13 @@ export class LessonsService {
       .snapshotChanges()
       .map(resuts => resuts[1].key)
       .switchMap(lessonId => this.angularFireDb
-        .object(`lessons${lessonId}`)
+        .object(`lessons/${lessonId}`)
         .snapshotChanges())
       .map(Lesson.fromJson);
   }
 
   loadPreviousLesson(courseId: string, lessonId: string): Observable<Lesson> {
-    return this.angularFireDb.list(`lessonsPerCourse${courseId}`,
+    return this.angularFireDb.list(`lessonsPerCourse/${courseId}`,
       ref =>
         ref.orderByKey()
           .endAt(lessonId)
@@ -44,7 +44,7 @@ export class LessonsService {
       .snapshotChanges()
       .map(resuts => resuts[0].key)
       .switchMap(lessonId => this.angularFireDb
-        .object(`lessons${lessonId}`)
+        .object(`lessons/${lessonId}`)
         .snapshotChanges())
       .map(Lesson.fromJson);
   }
