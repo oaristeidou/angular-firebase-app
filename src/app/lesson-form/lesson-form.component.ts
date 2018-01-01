@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-lesson-form',
@@ -7,9 +8,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LessonFormComponent implements OnInit {
 
-  constructor() { }
+  form:FormGroup;
+
+  constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit() {
+    this.form= this.formBuilder.group({
+      description: ['',Validators.required],
+      url: ['',Validators.required],
+      videoUrl: ['',[Validators.required]],
+      tags: ['',Validators.required],
+      longDescription: ['']
+    })
+  }
+
+  isErrorVisible(field:string, error:string) {
+    return this.form.controls[field].dirty
+      && this.form.controls[field].errors &&
+      this.form.controls[field].errors[error];
   }
 
 }
