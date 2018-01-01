@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {validUrl} from "../shared/validators/validUrl";
 
 @Component({
   selector: 'app-lesson-form',
@@ -16,7 +17,7 @@ export class LessonFormComponent implements OnInit {
     this.form= this.formBuilder.group({
       description: ['',Validators.required],
       url: ['',Validators.required],
-      videoUrl: ['',[Validators.required]],
+      videoUrl: ['',[Validators.required, validUrl]],
       tags: ['',Validators.required],
       longDescription: ['']
     })
