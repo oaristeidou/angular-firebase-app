@@ -5,6 +5,7 @@ import {CourseDetailsComponent} from "./course-details/course-details.component"
 import {LessonDetailsComponent} from "./lesson-details/lesson-details.component";
 import {NewLessonComponent} from "./new-lesson/new-lesson.component";
 import {EditLessonComponent} from "./edit-lesson/edit-lesson.component";
+import {LessonResolver} from "./shared/model/lesson.resolver";
 /**
  * Created by odyssefs on 22.12.17.
  */
@@ -39,13 +40,17 @@ export const routerConfig: Route[] = [
     path:'lessons/:id',
     children: [
       {
-        path:'',
-        component: LessonDetailsComponent
+        path:'edit',
+        component: EditLessonComponent,
+        resolve:{
+          lesson: LessonResolver
+        }
       },
       {
-        path:'edit',
-        component: EditLessonComponent
+        path:'',
+        component: LessonDetailsComponent
       }
+
     ]
   },
   {

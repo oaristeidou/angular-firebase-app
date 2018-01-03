@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {validUrl} from "../shared/validators/validUrl";
 
@@ -7,13 +7,14 @@ import {validUrl} from "../shared/validators/validUrl";
   templateUrl: './lesson-form.component.html',
   styleUrls: ['./lesson-form.component.css']
 })
-export class LessonFormComponent implements OnInit {
+export class LessonFormComponent implements OnInit, OnChanges {
 
   form:FormGroup;
 
-  constructor(private formBuilder: FormBuilder) { }
+  @Input()
+  initialValue:any;
 
-  ngOnInit() {
+  constructor(private formBuilder: FormBuilder) {
     this.form= this.formBuilder.group({
       description: ['',Validators.required],
       url: ['',Validators.required],
@@ -21,6 +22,15 @@ export class LessonFormComponent implements OnInit {
       tags: ['',Validators.required],
       longDescription: ['']
     })
+  }
+
+  ngOnInit() {
+
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['initialValue'])
+      this.form.patchValue(changes['initialValue'].currentValue);
   }
 
   isErrorVisible(field:string, error:string) {
