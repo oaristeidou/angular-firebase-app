@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {Lesson} from "../shared/model/lesson";
+import {LessonsService} from "../shared/model/lessons.service";
 
 @Component({
   selector: 'app-edit-lesson',
@@ -11,7 +12,7 @@ export class EditLessonComponent implements OnInit {
 
   lesson: Lesson;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private lessonService: LessonsService) {
     route.data
       .do(console.log)
       .subscribe(
@@ -20,6 +21,16 @@ export class EditLessonComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  saveLesson(lesson: Lesson){
+    this.lessonService.saveLesson(this.lesson.key, lesson)
+      .subscribe(
+        ()=>{
+          alert('Lesson successfully saved!');
+        },
+        err=> alert(`Error saving lesson ${err}`)
+      )
   }
 
 }

@@ -1,3 +1,3 @@
-<app-lesson-form [initialValue]="lesson"></app-lesson-form>
+<app-lesson-form [initialValue]="lesson" #form></app-lesson-form>
 
-<button>Save changes</button>
+<button (click)="saveLesson(form.value)">Save changes</button>

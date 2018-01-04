@@ -67,6 +67,16 @@ export class LessonsService {
 
   }
 
+  saveLesson(lessonId:string, lesson:Lesson):Observable<Lesson>{
+    const lessonToSave = Object.assign({}, lesson);
+    delete (lessonToSave.key);
+
+    let dataToSave={};
+    dataToSave[`lessons/${lessonId}`]=lessonToSave;
+
+    return this.firebaseUpdate(dataToSave);
+  }
+
   firebaseUpdate(dataToSave: {}) {
     const subject = new Subject();
 
