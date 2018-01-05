@@ -28,6 +28,7 @@ import { EditLessonComponent } from './edit-lesson/edit-lesson.component';
 import {LessonResolver} from "./shared/model/lesson.resolver";
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import {AuthService} from "./shared/security/auth.service";
 
 
 @NgModule({
@@ -53,7 +54,7 @@ import { RegisterComponent } from './register/register.component';
     RouterModule.forRoot(routerConfig),
     ReactiveFormsModule
   ],
-  providers: [LessonsService, CoursesService, LessonResolver],
+  providers: [LessonsService, CoursesService, LessonResolver, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
