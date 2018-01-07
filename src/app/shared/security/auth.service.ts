@@ -21,6 +21,29 @@ export class AuthService {
     return this.fromFirebaseAuthPromise(this.fireAuth.auth.createUserWithEmailAndPassword(email, password));
   }
 
+  logout(): Observable<any>{
+    return this.fromFirebaseAuthPromiseLogout(this.fireAuth.auth.signOut());
+  }
+
+
+
+  fromFirebaseAuthPromiseLogout(promise): Observable<any> {
+    const subject = new Subject<any>();
+
+    promise
+      .then(res => {
+          this.authInfo$.next(AuthService.UNKNOWN_USER);
+          subject.next(res);
+          subject.complete();
+        },
+        err => {
+          this.authInfo$.error(err);
+          subject.error(err);
+          subject.complete();
+        });
+    return subject.asObservable();
+  }
+
   fromFirebaseAuthPromise(promise): Observable<any> {
 
     const subject = new Subject<any>();
@@ -39,7 +62,6 @@ export class AuthService {
         });
     return subject.asObservable();
   }
-
 
 
 }
