@@ -15,11 +15,13 @@
     </li>
     <li>
       <a routerLink="login"
-      routerLinkActive="menu-active">Login</a>
+         routerLinkActive="menu-active"
+         *ngIf="!authInfo?.isLoggedIn()">Login</a>
     </li>
     <li>
       <a routerLink="register"
-          routerLinkActive="menu-active">Register</a>
+         routerLinkActive="menu-active"
+         *ngIf="!authInfo?.isLoggedIn()">Register</a>
     </li>
     <li>
       <a>Logout</a>
